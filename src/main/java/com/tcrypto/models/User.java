@@ -29,7 +29,6 @@ public class User {
     private String country;
 
     @Column
-    @Pattern(regexp = "/^\\d{5,25}$/")
     @NotNull
     private String phone;
 
