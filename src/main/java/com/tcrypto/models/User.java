@@ -18,7 +18,7 @@ public class User {
     @Column
     @NotNull
     @Length(max = 120, message = "max 120 chars")
-    private  String name;
+    private String name;
 
     @Column
     @Length(max = 120, message = "max 120 chars")
@@ -44,14 +44,24 @@ public class User {
     @Embedded
     private SocialNetworks socialNetworks;
 
-    @OneToMany
-    private List<AccessToken> accessTokens;
+    @OneToOne
+    private AccessToken accessTokens;
 
-    public List<AccessToken> getAccessTokens() {
+    public User() {}
+
+    public User(String name, String email, String phone, String password, String surname) {
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.password = password;
+        this.email = email;
+    }
+
+    public AccessToken getAccessTokens() {
         return accessTokens;
     }
 
-    public void setAccessTokens(List<AccessToken> accessTokens) {
+    public void setAccessTokens(AccessToken accessTokens) {
         this.accessTokens = accessTokens;
     }
 

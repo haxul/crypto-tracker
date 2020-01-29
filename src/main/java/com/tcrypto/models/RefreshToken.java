@@ -18,7 +18,7 @@ public class RefreshToken {
     @Length(max = 64)
     private String token;
 
-    @ManyToOne
+    @OneToOne
     private AccessToken accessToken;
 
     @Column

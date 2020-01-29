@@ -24,17 +24,17 @@ public class AccessToken {
     @Length(max = 32)
     private String token;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 
-    @OneToMany
-    private List<RefreshToken> refreshTokens;
+    @OneToOne
+    private RefreshToken refreshTokens;
 
-    public List<RefreshToken> getRefreshTokens() {
+    public RefreshToken getRefreshTokens() {
         return refreshTokens;
     }
 
-    public void setRefreshTokens(List<RefreshToken> refreshTokens) {
+    public void setRefreshTokens(RefreshToken refreshTokens) {
         this.refreshTokens = refreshTokens;
     }
 
