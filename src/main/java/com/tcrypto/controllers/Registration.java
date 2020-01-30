@@ -27,7 +27,7 @@ public class Registration {
 
     @PostMapping
     public ResponseEntity<String> signUp(@Valid @RequestBody UserSignupDto userSignupDto) {
-        User user = userService.createUser(userSignupDto);
+        User user = userService.register(userSignupDto);
         String message = "The User " + user.getId() + " is successfully created";
         return new ResponseEntity<>(message,HttpStatus.CREATED);
     }

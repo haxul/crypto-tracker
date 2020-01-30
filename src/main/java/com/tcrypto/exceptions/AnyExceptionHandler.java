@@ -30,8 +30,8 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
     // =====================================================================================
 
-    @ExceptionHandler(value = {UserAlreadyExistsException.class})
-    public ResponseEntity<Object> handleAnyException(UserAlreadyExistsException ex, WebRequest request) {
+    @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class })
+    public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
         String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
