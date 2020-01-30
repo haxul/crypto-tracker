@@ -2,6 +2,7 @@ package com.tcrypto.controllers;
 
 import com.tcrypto.dao.UserDao;
 import com.tcrypto.dto.request.UserSignupDto;
+import com.tcrypto.exceptions.UserAlreadyExistsException;
 import com.tcrypto.models.User;
 import com.tcrypto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,6 @@ public class Registration {
     public ResponseEntity<String> signUp(@Valid @RequestBody UserSignupDto userSignupDto) {
         User user = userService.createUser(userSignupDto);
         String message = "The User " + user.getId() + " is successfully created";
-        user = null;
-        user.getId();
         return new ResponseEntity<>(message,HttpStatus.CREATED);
     }
 }

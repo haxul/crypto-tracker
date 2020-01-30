@@ -2,6 +2,7 @@ package com.tcrypto.services;
 
 import com.tcrypto.dao.UserDao;
 import com.tcrypto.dto.request.UserSignupDto;
+import com.tcrypto.exceptions.UserAlreadyExistsException;
 import com.tcrypto.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class UserService {
 
     public User createUser(UserSignupDto userSignupDto) {
         String phone = userSignupDto.getPhone();
+        boolean doesUserExist = userDao.findUserByPhone(phone) != null;
+        if (doesUserExist) throw new UserAlreadyExistsException("the user is already registered");
         String name = userSignupDto.getName();
         String email = userSignupDto.getEmail();
         String password = userSignupDto.getPassword();
