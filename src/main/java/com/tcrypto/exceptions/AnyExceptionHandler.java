@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.util.Date;
 
 @ControllerAdvice
@@ -35,5 +36,12 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
         String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {IOException.class })
+    public ResponseEntity<Object> handleAnyException(IOException ex, WebRequest request) {
+        String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
+        ErrorMessage errorMessage = new ErrorMessage(text, new Date());
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
