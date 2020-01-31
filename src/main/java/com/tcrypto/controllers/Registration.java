@@ -1,7 +1,7 @@
 package com.tcrypto.controllers;
 
 import com.tcrypto.dto.request.UserSignupDto;
-import com.tcrypto.models.User;
+import com.tcrypto.dto.response.DaData.DaDataDtoResponse;
 import com.tcrypto.services.DaDataService;
 import com.tcrypto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,8 @@ public class Registration {
     public ResponseEntity<String> signUp(@Valid @RequestBody UserSignupDto userSignupDto, HttpServletRequest request) throws IOException {
 //        User user = userService.register(userSignupDto);
           String ip = userService.getClientIp(request);
-//          String city = daDataService.defineCountry(ip).getBody();
+          DaDataDtoResponse response = daDataService.defineCountry(ip);
+          System.out.println(response.getLocation().getValue());
 //        String message = "The User " + user.getId() + " is successfully created";
         return new ResponseEntity<>("hello",HttpStatus.CREATED);
     }
