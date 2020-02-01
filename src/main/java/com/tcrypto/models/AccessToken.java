@@ -1,5 +1,6 @@
 package com.tcrypto.models;
 
+import com.tcrypto.models.impl.TokenAble;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.Length;
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class AccessToken {
+public class AccessToken implements TokenAble {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class AccessToken {
     private Date created;
 
     @Column
-    @Length(max = 32)
+    @Length(max = 64)
     private String token;
 
     @OneToOne
@@ -30,6 +31,12 @@ public class AccessToken {
     @OneToOne
     private RefreshToken refreshTokens;
 
+    public AccessToken(){}
+
+    public AccessToken(String token, RefreshToken refreshToken) {
+        this.refreshTokens = refreshToken;
+        this.token = token;
+    }
     public RefreshToken getRefreshTokens() {
         return refreshTokens;
     }

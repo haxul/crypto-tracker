@@ -1,5 +1,6 @@
 package com.tcrypto.models;
 
+import com.tcrypto.models.impl.TokenAble;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,14 +9,14 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class RefreshToken {
+public class RefreshToken implements TokenAble {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
-    @Length(max = 64)
+    @Length(max = 128)
     private String token;
 
     @OneToOne
@@ -26,6 +27,9 @@ public class RefreshToken {
     @CreationTimestamp
     private Date created;
 
+    public RefreshToken(String token) {
+        this.token = token;
+    }
     public int getId() {
         return id;
     }
