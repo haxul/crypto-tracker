@@ -3,6 +3,8 @@ package com.tcrypto.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcrypto.dto.response.DaData.DaDataDtoResponse;
 import kong.unirest.Unirest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,10 +14,13 @@ public class DaDataService {
 
     private final String BASE_URL = "https://suggestions.dadata.ru";
 
+    @Value("${dadata.access.token}")
+    private String token;
+
     private String createRequest(String ip) throws IOException {
-        return Unirest.get("https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address?ip=46.226.227.20")
+        return Unirest.get( BASE_URL + "/suggestions/api/4_1/rs/iplocate/address?ip=" + ip)
                 .header("Accept", "application/json")
-                .header("Authorization", "Token a844bb6b7bf427604f31b7606204371787a0fd75")
+                .header("Authorization", "Token " + token)
                 .header("Cache-Control", "no-cache")
                 .header("Host", "suggestions.dadata.ru")
                 .header("Accept-Encoding", "gzip, deflate")
@@ -25,8 +30,9 @@ public class DaDataService {
                 .asString().getBody();
     }
 
-    public DaDataDtoResponse defineCountry(String ip) throws IOException {
+    public String defineCountry(String ip) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(createRequest(ip), DaDataDtoResponse.class);
+        DaDataDtoResponse response = mapper.readValue(createRequest(ip), DaDataDtoResponse.class);
+        return response.getLocation() != null ? response.getLocation().getData().getCountry_iso_code() : "unknown";
     }
 }
