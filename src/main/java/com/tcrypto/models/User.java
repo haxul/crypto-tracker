@@ -49,12 +49,13 @@ public class User {
 
     public User() {}
 
-    public User(String name, String email, String phone, String password, String surname) {
+    public User(String name, String email, String phone, String password, String surname, String country) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.password = password;
         this.email = email;
+        this.country = country;
     }
 
     public AccessToken getAccessTokens() {
