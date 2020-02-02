@@ -45,25 +45,26 @@ public class User {
     private SocialNetworks socialNetworks;
 
     @OneToOne
-    private AccessToken accessTokens;
+    private AccessToken accessToken;
 
     public User() {}
 
-    public User(String name, String email, String phone, String password, String surname, String country) {
+    public User(String name, String email, String phone, String password, String surname, String country, AccessToken token) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.password = password;
         this.email = email;
         this.country = country;
+        this.accessToken = token;
     }
 
     public AccessToken getAccessTokens() {
-        return accessTokens;
+        return accessToken;
     }
 
     public void setAccessTokens(AccessToken accessTokens) {
-        this.accessTokens = accessTokens;
+        this.accessToken = accessTokens;
     }
 
     public int getId() {

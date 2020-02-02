@@ -4,6 +4,7 @@ import com.tcrypto.dao.UserDao;
 import com.tcrypto.dto.request.UserSignupDto;
 import com.tcrypto.exceptions.IncorrectUserPhoneToRegister;
 import com.tcrypto.exceptions.UserAlreadyExistsException;
+import com.tcrypto.models.AccessToken;
 import com.tcrypto.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,13 @@ public class UserService {
 
     private final UserDao userDao;
     private final DaDataService daDataService;
+    private final AccessTokenService accessTokenService;
 
     @Autowired
-    public UserService(UserDao userDao, DaDataService daDataService) {
+    public UserService(UserDao userDao, DaDataService daDataService, AccessTokenService accessTokenService) {
         this.daDataService = daDataService;
         this.userDao = userDao;
+        this.accessTokenService = accessTokenService;
     }
 
     public User register(final UserSignupDto userSignupDto, final HttpServletRequest httpServletRequest) throws IOException {
@@ -35,7 +38,9 @@ public class UserService {
         String surname = userSignupDto.getSurname();
         String clientIp = getClientIp(httpServletRequest);
         String country = daDataService.defineCountry(clientIp);
-        User user = new User(name, email, phone, password, surname, country);
+        AccessToken token = (AccessToken) accessTokenService.createToken();
+        User user = new User(name, email, phone, password, surname, country, token);
+        token.setUser(user);
         userDao.save(user);
         return user;
     }

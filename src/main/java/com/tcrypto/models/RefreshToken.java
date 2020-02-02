@@ -27,6 +27,7 @@ public class RefreshToken implements TokenAble {
     @CreationTimestamp
     private Date created;
 
+    public RefreshToken() {}
     public RefreshToken(String token) {
         this.token = token;
     }
