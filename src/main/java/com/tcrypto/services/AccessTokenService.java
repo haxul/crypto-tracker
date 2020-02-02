@@ -3,6 +3,7 @@ package com.tcrypto.services;
 import com.tcrypto.dao.AccessTokenDao;
 import com.tcrypto.models.AccessToken;
 import com.tcrypto.models.RefreshToken;
+import com.tcrypto.models.User;
 import com.tcrypto.models.impl.TokenAble;
 import com.tcrypto.services.impl.TokenHandleAble;
 import com.tcrypto.utils.StringRandom;
@@ -29,5 +30,11 @@ public class AccessTokenService implements TokenHandleAble {
         refreshToken.setAccessToken(token);
         accessTokenDao.save(token);
         return token;
+    }
+
+    public void removeTokenByUser(User user) {
+        AccessToken token = accessTokenDao.findAccessTokenByUserId(user.getId());
+        user.setAccessToken(null);
+        accessTokenDao.delete(token);
     }
 }
