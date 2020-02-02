@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccessTokenDao extends CrudRepository<AccessToken, Integer> {
+    public AccessToken findAccessTokenByUserId(int id);
 }
