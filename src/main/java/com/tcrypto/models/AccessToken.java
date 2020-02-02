@@ -1,6 +1,7 @@
 package com.tcrypto.models;
 
 import com.tcrypto.models.impl.TokenAble;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.Length;
@@ -28,21 +29,21 @@ public class AccessToken implements TokenAble {
     @OneToOne
     private User user;
 
-    @OneToOne
-    private RefreshToken refreshTokens;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private RefreshToken refreshToken;
 
     public AccessToken(){}
 
     public AccessToken(String token, RefreshToken refreshToken) {
-        this.refreshTokens = refreshToken;
+        this.refreshToken = refreshToken;
         this.token = token;
     }
-    public RefreshToken getRefreshTokens() {
-        return refreshTokens;
+    public RefreshToken getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setRefreshTokens(RefreshToken refreshTokens) {
-        this.refreshTokens = refreshTokens;
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public int getId() {

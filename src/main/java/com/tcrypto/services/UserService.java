@@ -2,12 +2,15 @@ package com.tcrypto.services;
 
 import com.tcrypto.dao.UserDao;
 import com.tcrypto.dto.request.UserSignupDto;
+import com.tcrypto.dto.response.AuthResponseDto;
 import com.tcrypto.exceptions.IncorrectUserPhoneToRegister;
 import com.tcrypto.exceptions.UserAlreadyExistsException;
+import com.tcrypto.models.AccessToken;
 import com.tcrypto.models.User;
+import com.tcrypto.utils.StringRandom;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -15,14 +18,17 @@ import java.util.regex.Pattern;
 
 @Service
 public class UserService {
-
+    public static String STATIC_SALT = "pOpr4MIucrTEVIFkJQLbwXbudrB1Hbed43c4RaLe6Y0cgN6aNggK9xBejldUcArQlGqMnxil1CLyusIK";
+    private static int DYNAMIC_SALT_SIZE = 45;
     private final UserDao userDao;
     private final DaDataService daDataService;
+    private final AccessTokenService accessTokenService;
 
     @Autowired
-    public UserService(UserDao userDao, DaDataService daDataService) {
+    public UserService(UserDao userDao, DaDataService daDataService, AccessTokenService accessTokenService) {
         this.daDataService = daDataService;
         this.userDao = userDao;
+        this.accessTokenService = accessTokenService;
     }
 
     public User register(final UserSignupDto userSignupDto, final HttpServletRequest httpServletRequest) throws IOException {
@@ -34,13 +40,17 @@ public class UserService {
         String password = userSignupDto.getPassword();
         String surname = userSignupDto.getSurname();
         String clientIp = getClientIp(httpServletRequest);
+        String dynamicSalt = StringRandom.generate(DYNAMIC_SALT_SIZE);
+        String hashedPassword = DigestUtils.sha256Hex(password + STATIC_SALT + dynamicSalt);
         String country = daDataService.defineCountry(clientIp);
-        User user = new User(name, email, phone, password, surname, country);
+        AccessToken token = (AccessToken) accessTokenService.createToken();
+        User user = new User(name, email, phone, hashedPassword, dynamicSalt, surname, country, token);
+        token.setUser(user);
         userDao.save(user);
         return user;
     }
 
-    private void checkPhoneValidity(final String phone) {
+    public void checkPhoneValidity(final String phone) {
         Pattern pattern = Pattern.compile("^\\+\\d{7,25}$");
         Matcher matcher = pattern.matcher(phone);
         if (!matcher.find())throw new IncorrectUserPhoneToRegister("not valid phone number");

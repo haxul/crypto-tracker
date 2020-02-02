@@ -19,7 +19,7 @@ public class RefreshToken implements TokenAble {
     @Length(max = 128)
     private String token;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private AccessToken accessToken;
 
     @Column
@@ -27,6 +27,7 @@ public class RefreshToken implements TokenAble {
     @CreationTimestamp
     private Date created;
 
+    public RefreshToken() {}
     public RefreshToken(String token) {
         this.token = token;
     }

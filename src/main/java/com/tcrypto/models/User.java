@@ -1,12 +1,9 @@
 package com.tcrypto.models;
 
 import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Entity
 public class User {
@@ -41,29 +38,43 @@ public class User {
     @NotNull
     private String password;
 
+    @Column
+    @NotNull
+    private String dynamicSalt;
+
     @Embedded
     private SocialNetworks socialNetworks;
 
     @OneToOne
-    private AccessToken accessTokens;
+    private AccessToken accessToken;
 
     public User() {}
 
-    public User(String name, String email, String phone, String password, String surname, String country) {
+    public User(String name, String email, String phone, String password, String dynamicSalt, String surname, String country, AccessToken token) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.password = password;
         this.email = email;
         this.country = country;
+        this.accessToken = token;
+        this.dynamicSalt = dynamicSalt;
     }
 
-    public AccessToken getAccessTokens() {
-        return accessTokens;
+    public String getDynamicSalt() {
+        return dynamicSalt;
     }
 
-    public void setAccessTokens(AccessToken accessTokens) {
-        this.accessTokens = accessTokens;
+    public void setDynamicSalt(String dynamicSalt) {
+        this.dynamicSalt = dynamicSalt;
+    }
+
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
     }
 
     public int getId() {
