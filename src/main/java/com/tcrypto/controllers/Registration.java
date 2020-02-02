@@ -22,8 +22,7 @@ import java.io.IOException;
 public class Registration {
 
     private final UserService userService;
-    @Autowired
-    private AccessTokenService accessTokenService;
+
     @Autowired
     public Registration(UserService userService) {
         this.userService = userService;
@@ -34,11 +33,5 @@ public class Registration {
         User user = userService.register(userSignupDto, request);
         String message = "The User " + user.getId() + " is successfully created";
         return new ResponseEntity<>(message,HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public String test() {
-        accessTokenService.createToken();
-        return "";
     }
 }
