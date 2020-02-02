@@ -29,20 +29,20 @@ public class AccessToken implements TokenAble {
     private User user;
 
     @OneToOne
-    private RefreshToken refreshTokens;
+    private RefreshToken refreshToken;
 
     public AccessToken(){}
 
     public AccessToken(String token, RefreshToken refreshToken) {
-        this.refreshTokens = refreshToken;
+        this.refreshToken = refreshToken;
         this.token = token;
     }
-    public RefreshToken getRefreshTokens() {
-        return refreshTokens;
+    public RefreshToken getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setRefreshTokens(RefreshToken refreshTokens) {
-        this.refreshTokens = refreshTokens;
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public int getId() {

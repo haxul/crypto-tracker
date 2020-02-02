@@ -10,7 +10,6 @@ import com.tcrypto.utils.StringRandom;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -19,6 +18,7 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
     private static String STATIC_SALT = "pOpr4MIucrTEVIFkJQLbwXbudrB1Hbed43c4RaLe6Y0cgN6aNggK9xBejldUcArQlGqMnxil1CLyusIK";
+    private static int DYNAMIC_SALT_SIZE = 45;
     private final UserDao userDao;
     private final DaDataService daDataService;
     private final AccessTokenService accessTokenService;
@@ -39,7 +39,7 @@ public class UserService {
         String password = userSignupDto.getPassword();
         String surname = userSignupDto.getSurname();
         String clientIp = getClientIp(httpServletRequest);
-        String dynamicSalt = StringRandom.generate(45);
+        String dynamicSalt = StringRandom.generate(DYNAMIC_SALT_SIZE);
         String hashedPassword = DigestUtils.sha256Hex(password + STATIC_SALT + dynamicSalt);
         String country = daDataService.defineCountry(clientIp);
         AccessToken token = (AccessToken) accessTokenService.createToken();
@@ -48,6 +48,8 @@ public class UserService {
         userDao.save(user);
         return user;
     }
+
+    public
 
     private void checkPhoneValidity(final String phone) {
         Pattern pattern = Pattern.compile("^\\+\\d{7,25}$");

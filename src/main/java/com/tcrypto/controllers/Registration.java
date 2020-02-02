@@ -1,12 +1,9 @@
 package com.tcrypto.controllers;
 
-import com.tcrypto.dao.AccessTokenDao;
 import com.tcrypto.dto.request.UserSignupDto;
-import com.tcrypto.dto.response.DaData.DaDataDtoResponse;
+import com.tcrypto.dto.response.RegistrationDtoResponse;
 import com.tcrypto.models.AccessToken;
 import com.tcrypto.models.User;
-import com.tcrypto.services.AccessTokenService;
-import com.tcrypto.services.DaDataService;
 import com.tcrypto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +26,10 @@ public class Registration {
     }
 
     @PostMapping
-    public ResponseEntity<String> signUp(@Valid @RequestBody UserSignupDto userSignupDto, HttpServletRequest request) throws IOException {
+    public ResponseEntity<RegistrationDtoResponse> signUp(@Valid @RequestBody UserSignupDto userSignupDto, HttpServletRequest request) throws IOException {
         User user = userService.register(userSignupDto, request);
-        String message = "The User " + user.getId() + " is successfully created";
-        return new ResponseEntity<>(message,HttpStatus.CREATED);
+        AccessToken accessToken = user.getAccessToken();
+        RegistrationDtoResponse response = new RegistrationDtoResponse(user.getId(), accessToken.getToken(), accessToken.getRefreshToken().getToken());
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 }
