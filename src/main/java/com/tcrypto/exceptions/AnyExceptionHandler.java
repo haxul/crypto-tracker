@@ -44,4 +44,9 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = {UserIsNotFoundException.class })
+    public ResponseEntity<Object> handleAnyException(UserIsNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>("The user is not found", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 }

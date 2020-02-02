@@ -2,6 +2,7 @@ package com.tcrypto.services;
 
 import com.tcrypto.dao.UserDao;
 import com.tcrypto.dto.request.UserSignupDto;
+import com.tcrypto.dto.response.AuthResponseDto;
 import com.tcrypto.exceptions.IncorrectUserPhoneToRegister;
 import com.tcrypto.exceptions.UserAlreadyExistsException;
 import com.tcrypto.models.AccessToken;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class UserService {
-    private static String STATIC_SALT = "pOpr4MIucrTEVIFkJQLbwXbudrB1Hbed43c4RaLe6Y0cgN6aNggK9xBejldUcArQlGqMnxil1CLyusIK";
+    public static String STATIC_SALT = "pOpr4MIucrTEVIFkJQLbwXbudrB1Hbed43c4RaLe6Y0cgN6aNggK9xBejldUcArQlGqMnxil1CLyusIK";
     private static int DYNAMIC_SALT_SIZE = 45;
     private final UserDao userDao;
     private final DaDataService daDataService;
@@ -49,9 +50,7 @@ public class UserService {
         return user;
     }
 
-    public
-
-    private void checkPhoneValidity(final String phone) {
+    public void checkPhoneValidity(final String phone) {
         Pattern pattern = Pattern.compile("^\\+\\d{7,25}$");
         Matcher matcher = pattern.matcher(phone);
         if (!matcher.find())throw new IncorrectUserPhoneToRegister("not valid phone number");
