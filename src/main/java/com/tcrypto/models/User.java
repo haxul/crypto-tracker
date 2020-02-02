@@ -41,6 +41,10 @@ public class User {
     @NotNull
     private String password;
 
+    @Column
+    @NotNull
+    private String dynamicSalt;
+
     @Embedded
     private SocialNetworks socialNetworks;
 
@@ -49,7 +53,7 @@ public class User {
 
     public User() {}
 
-    public User(String name, String email, String phone, String password, String surname, String country, AccessToken token) {
+    public User(String name, String email, String phone, String password, String dynamicSalt, String surname, String country, AccessToken token) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
@@ -57,14 +61,23 @@ public class User {
         this.email = email;
         this.country = country;
         this.accessToken = token;
+        this.dynamicSalt = dynamicSalt;
     }
 
-    public AccessToken getAccessTokens() {
+    public String getDynamicSalt() {
+        return dynamicSalt;
+    }
+
+    public void setDynamicSalt(String dynamicSalt) {
+        this.dynamicSalt = dynamicSalt;
+    }
+
+    public AccessToken getAccessToken() {
         return accessToken;
     }
 
-    public void setAccessTokens(AccessToken accessTokens) {
-        this.accessToken = accessTokens;
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
     }
 
     public int getId() {
