@@ -49,4 +49,9 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAnyException(UserIsNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>("The user is not found", new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {UnAuthorizedException.class })
+    public ResponseEntity<Object> handleAnyException(UnAuthorizedException ex, WebRequest request) {
+        return new ResponseEntity<>("Access to the resource is denied", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
 }

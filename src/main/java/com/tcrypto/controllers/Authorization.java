@@ -24,17 +24,13 @@ import javax.validation.Valid;
 @RequestMapping("/authorize")
 public class Authorization {
 
-    private final UserService userService;
     private final UserDao userDao;
     private final AccessTokenService accessTokenService;
-    private final AccessTokenDao accessTokenDao;
 
     @Autowired
-    public Authorization(UserService userService, UserDao userDao, AccessTokenService accessTokenService, AccessTokenDao accessTokenDao) {
-        this.userService = userService;
+    public Authorization(UserDao userDao, AccessTokenService accessTokenService, AccessTokenDao accessTokenDao) {
         this.userDao = userDao;
         this.accessTokenService = accessTokenService;
-        this.accessTokenDao = accessTokenDao;
     }
 
     @PostMapping
