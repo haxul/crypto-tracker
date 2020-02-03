@@ -15,8 +15,7 @@ public class RefreshTokenService implements TokenHandleAble {
 
     private final int REFRESH_TOKEN_SIZE = 128;
     private final RefreshTokenDao refreshTokenDao;
-//    public static long TIME_TO_LIVE = 7776000000L; // 3 month
-    public static long TIME_TO_LIVE = 60000; // 3 month
+    public static long TIME_TO_LIVE = 7776000000L; // 3 month
 
     public RefreshTokenService(RefreshTokenDao refreshTokenDao) {
         this.refreshTokenDao = refreshTokenDao;
