@@ -37,11 +37,6 @@ public class Authorization {
         this.accessTokenDao = accessTokenDao;
     }
 
-    /*
-     * This method is to check phone and password of input form.
-     * If data coincides to any user, create new access token and bounded to it refresh one.
-     * Else throw exception that user could be found
-     * */
     @PostMapping
     public ResponseEntity<AuthResponseDto> authorize(@Valid @RequestBody final AuthRequestDto authRequestDto) {
         String phone = authRequestDto.getPhone();
@@ -51,11 +46,7 @@ public class Authorization {
         String inputHashedPassword = DigestUtils.sha256Hex(authRequestDto.getPassword() + UserService.STATIC_SALT + dynamicSalt);
         String hashedPassword = user.getPassword();
         if (!inputHashedPassword.equals(hashedPassword)) throw new UserIsNotFoundException();
-
-        AccessToken existedAccessToken = accessTokenDao.findAccessTokenByUserId(user.getId());
-        user.setAccessToken(null);
-        accessTokenDao.delete(existedAccessToken);
-
+        accessTokenService.removeTokenByUser(user);
         AccessToken accessToken =(AccessToken) accessTokenService.createToken();
         accessToken.setUser(user);
         user.setAccessToken(accessToken);
