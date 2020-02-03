@@ -15,7 +15,7 @@ import java.util.Date;
 @ControllerAdvice
 public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // I rest this code only as a reminder for my in my next projects ====================
+    // I leave this code only as a reminder for myself in my next projects ====================
     //    @ExceptionHandler(value = {Exception.class})
 //    public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
 //        String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
@@ -31,27 +31,37 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
     // =====================================================================================
 
-    @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class })
+    @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class})
     public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
         String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {IOException.class })
+    @ExceptionHandler(value = {IOException.class})
     public ResponseEntity<Object> handleAnyException(IOException ex, WebRequest request) {
         String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = {UserIsNotFoundException.class })
+    @ExceptionHandler(value = {UserIsNotFoundException.class})
     public ResponseEntity<Object> handleAnyException(UserIsNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>("The user is not found", new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {UnAuthorizedException.class })
+    @ExceptionHandler(value = {UnAuthorizedException.class})
     public ResponseEntity<Object> handleAnyException(UnAuthorizedException ex, WebRequest request) {
         return new ResponseEntity<>("Access to the resource is denied", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = {RefreshTokenUnprocessableEntity.class})
+    public ResponseEntity<Object> handleAnyException(RefreshTokenUnprocessableEntity ex, WebRequest request) {
+        return new ResponseEntity<>("Unprocessable refresh token", new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {AccessTokenIsNotFoundException.class})
+    public ResponseEntity<Object> handleAnyException(AccessTokenIsNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>("Access token is not found", new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
