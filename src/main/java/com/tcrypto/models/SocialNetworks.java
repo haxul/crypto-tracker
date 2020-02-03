@@ -14,4 +14,28 @@ public class SocialNetworks {
     private String github;
     private String telegram;
     private String vkontakte;
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getTelegram() {
+        return telegram;
+    }
+
+    public void setTelegram(String telegram) {
+        this.telegram = telegram;
+    }
+
+    public String getVkontakte() {
+        return vkontakte;
+    }
+
+    public void setVkontakte(String vkontakte) {
+        this.vkontakte = vkontakte;
+    }
 }

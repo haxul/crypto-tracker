@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RefreshTokenDao extends CrudRepository<RefreshToken, Integer> {
+    RefreshToken findRefreshTokenByToken(String token);
 }

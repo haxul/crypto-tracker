@@ -15,6 +15,7 @@ public class AccessTokenService implements TokenHandleAble {
     private final int TOKEN_LENGTH = 64;
     private final AccessTokenDao accessTokenDao;
     private final RefreshTokenService refreshTokenService;
+    public static long TIME_TO_LIVE = 1800000; // 30 minute
 
     @Autowired
     public AccessTokenService(AccessTokenDao accessTokenDao, RefreshTokenService refreshTokenService) {
@@ -32,9 +33,14 @@ public class AccessTokenService implements TokenHandleAble {
         return token;
     }
 
-    public void removeTokenByUser(User user) {
+    public void removeToken(User user) {
         AccessToken token = accessTokenDao.findAccessTokenByUserId(user.getId());
         user.setAccessToken(null);
         accessTokenDao.delete(token);
+    }
+    public void removeToken(AccessToken accessToken) {
+        User user = accessToken.getUser();
+        user.setAccessToken(null);
+        accessTokenDao.delete(accessToken);
     }
 }
