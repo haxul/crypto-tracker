@@ -1,5 +1,9 @@
 package com.tcrypto.controllers;
 
+import com.tcrypto.dao.CoinDao;
+import com.tcrypto.dto.request.CoinCreateDto;
+import com.tcrypto.dto.response.Coinmarketcap.create.MarketCapCoin;
+import com.tcrypto.models.Coin;
 import com.tcrypto.services.CoinmarketcapService;
 import com.tcrypto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,30 +13,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
-@RequestMapping("/coinmarketcap")
+@RequestMapping("/coin")
 public class Coinmarketcap {
 
-    private final UserService userService;
     private final CoinmarketcapService coinmarketcapService;
-
-    public Coinmarketcap(UserService userService, CoinmarketcapService coinmarketcapService) {
+    public Coinmarketcap(CoinmarketcapService coinmarketcapService) {
         this.coinmarketcapService = coinmarketcapService;
-        this.userService = userService;
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<String> findToken(@PathVariable String token, HttpServletRequest request) {
-//        userService.checkAccessToken(request);
-        String data = coinmarketcapService.request();
-        Pattern pattern = Pattern.compile("(?<=\"price\":\\s)[\\d\\.]+");
-        Matcher matcher = pattern.matcher(data);
-        String result = matcher.find() ? matcher.group() : null;
-        return result == null ?
+    @GetMapping("/{token}/price")
+    public ResponseEntity<String> findCoinPrice(@PathVariable String token, HttpServletRequest request) {
+//      userService.checkAccessToken(request);
+        int price = coinmarketcapService.findPriceByCoinmarketcapId(2);
+        return price == 0 ?
                 new ResponseEntity<>("not found", HttpStatus.BAD_REQUEST) :
-                new ResponseEntity<>("litecoin is " + result, HttpStatus.OK);
+                new ResponseEntity<>("litecoin is " + price, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<MarketCapCoin> createCoin(@Valid @RequestBody CoinCreateDto coinCreateDto) throws IOException {
+        // userService.checkAccessToken(request);
+        MarketCapCoin marketCapCoin = coinmarketcapService.findCoinInCoinmarketcap(coinCreateDto.getSymbol());
+        return new ResponseEntity<>(marketCapCoin ,HttpStatus.OK);
     }
 }
