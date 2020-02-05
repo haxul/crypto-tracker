@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CoinDao extends CrudRepository<Coin, Integer> {
+    Coin findCoinByCoinmarketcapId(int id);
+    Coin findCoinBySymbol(String symbol);
 }

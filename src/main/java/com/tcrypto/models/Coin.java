@@ -26,16 +26,14 @@ public class Coin {
     private String name;
 
     @Column
-    @NotNull
     private int price;
 
     public Coin() {
     }
 
-    public Coin(String symbol, String name, int coinmarketcapId, int price) {
+    public Coin(String symbol, String name, int coinmarketcapId) {
         this.name = name;
         this.symbol = symbol;
-        this.price = price;
         this.coinmarketcapId = coinmarketcapId;
     }
 
