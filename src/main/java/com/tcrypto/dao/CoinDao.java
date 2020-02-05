@@ -4,6 +4,8 @@ import com.tcrypto.models.Coin;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CoinDao extends CrudRepository<Coin, Integer> {
     Coin findCoinByCoinmarketcapId(int id);

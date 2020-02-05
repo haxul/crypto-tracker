@@ -23,6 +23,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/coin")
@@ -57,5 +60,11 @@ public class Coinmarketcap {
         coin.setPrice(coinCurrentPrice);
         coinDao.save(coin);
         return new ResponseEntity<>(coin, HttpStatus.OK);
+    }
+
+    @GetMapping("/price/update")
+    public void updateAllCoinPrice(HttpServletRequest request) {
+        Iterable<Coin> iterator = coinDao.findAll();
+        iterator.forEach(coinmarketcapService::updateCoinPrice);
     }
 }
