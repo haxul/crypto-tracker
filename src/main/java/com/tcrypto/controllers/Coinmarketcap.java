@@ -1,5 +1,6 @@
 package com.tcrypto.controllers;
 
+import com.tcrypto.annotaitions.isCorrectSymbol;
 import com.tcrypto.dao.CoinDao;
 import com.tcrypto.dto.request.CoinCreateDto;
 import com.tcrypto.dto.response.Coinmarketcap.create.MarketCapCoin;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +23,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/coin")
+@Validated
 public class Coinmarketcap {
 
     private final CoinmarketcapService coinmarketcapService;
@@ -35,7 +41,7 @@ public class Coinmarketcap {
     }
 
     @GetMapping("/{coinSymbol}/price")
-    public ResponseEntity<String> findCoinPrice(@PathVariable("coinSymbol") @Size(max = 6) @Pattern(regexp = "^\\w+$") String coinSymbol, HttpServletRequest request) {
+    public ResponseEntity<String> findCoinPrice(@PathVariable @Size(max = 10) @Pattern(regexp = "^\\w+$") String coinSymbol, HttpServletRequest request) {
 //      userService.checkAccessToken(request);
         Coin coin = coinDao.findCoinBySymbol(coinSymbol);
         if (coin == null) throw new CoinIsNotRegistered();
@@ -54,5 +60,11 @@ public class Coinmarketcap {
         coin.setPrice(coinCurrentPrice);
         coinDao.save(coin);
         return new ResponseEntity<>(coin, HttpStatus.OK);
+    }
+
+    @GetMapping("/price/update")
+    public void updateAllCoinPrice(HttpServletRequest request) {
+        Iterable<Coin> iterator = coinDao.findAll();
+        iterator.forEach(coinmarketcapService::updateCoinPrice);
     }
 }

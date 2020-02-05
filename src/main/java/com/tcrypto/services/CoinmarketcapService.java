@@ -62,4 +62,12 @@ public class CoinmarketcapService {
         coinDao.save(coin);
         return coin;
     }
+
+    public void updateCoinPrice(Coin coin) {
+        int price = findPriceByCoinmarketcapId(coin.getCoinmarketcapId());
+        if (price != 0) {
+            coin.setPrice(price);
+            coinDao.save(coin);
+        }
+    }
 }

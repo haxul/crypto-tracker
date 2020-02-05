@@ -15,7 +15,7 @@ public class AccessTokenService implements TokenHandleAble {
     private final int TOKEN_LENGTH = 64;
     private final AccessTokenDao accessTokenDao;
     private final RefreshTokenService refreshTokenService;
-    public static long TIME_TO_LIVE = 1800000; // 30 minute
+    public static long TIME_TO_LIVE = 1800000 * 2; // 30 minute * 2
 
     @Autowired
     public AccessTokenService(AccessTokenDao accessTokenDao, RefreshTokenService refreshTokenService) {

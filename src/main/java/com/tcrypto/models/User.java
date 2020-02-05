@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -48,6 +50,9 @@ public class User {
     @OneToOne
     private AccessToken accessToken;
 
+    @ManyToMany
+    private Set<Coin> coins;
+
     public User() {}
 
     public User(String name, String email, String phone, String password, String dynamicSalt, String surname, String country, AccessToken token) {
@@ -59,6 +64,14 @@ public class User {
         this.country = country;
         this.accessToken = token;
         this.dynamicSalt = dynamicSalt;
+    }
+
+    public Set<Coin> getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Set<Coin> coins) {
+        this.coins = coins;
     }
 
     public String getDynamicSalt() {
