@@ -22,13 +22,6 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
 //        ErrorMessage errorMessage = new ErrorMessage(text, new Date());
 //        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
-
-//    @ExceptionHandler(value = {NullPointerException.class})
-//    public ResponseEntity<Object> handleAnyException(NullPointerException ex, WebRequest request) {
-//        String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
-//        ErrorMessage errorMessage = new ErrorMessage(text, new Date());
-//        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
-//    }
     // =====================================================================================
 
     @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class})
@@ -63,5 +56,19 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {AccessTokenIsNotFoundException.class})
     public ResponseEntity<Object> handleAnyException(AccessTokenIsNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>("Access token is not found", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {CoinIsNoTFoundInCoinmarketCap.class})
+    public ResponseEntity<Object> handleAnyException(CoinIsNoTFoundInCoinmarketCap ex, WebRequest request) {
+        return new ResponseEntity<>("The coin is not found in coinmarketcap.com", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {CoinIsExistAlready.class})
+    public ResponseEntity<Object> handleAnyException(CoinIsExistAlready ex, WebRequest request) {
+        return new ResponseEntity<>("The coin exists", new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(value = {CoinIsNotRegistered.class})
+    public ResponseEntity<Object> handleAnyException(CoinIsNotRegistered ex, WebRequest request) {
+        return new ResponseEntity<>("Coin is not registered", new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
