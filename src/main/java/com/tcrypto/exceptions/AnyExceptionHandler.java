@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -24,7 +25,7 @@ public class AnyExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
     // =====================================================================================
 
-    @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class})
+    @ExceptionHandler(value = {UserAlreadyExistsException.class, IncorrectUserPhoneToRegister.class, ConstraintViolationException.class})
     public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
         String text = ex == null ? ex.toString() : ex.getLocalizedMessage();
         ErrorMessage errorMessage = new ErrorMessage(text, new Date());
