@@ -3,6 +3,7 @@ package com.tcrypto.controllers;
 import com.tcrypto.dao.CoinDao;
 import com.tcrypto.dto.request.CoinCreateDto;
 import com.tcrypto.dto.response.Coinmarketcap.create.MarketCapCoin;
+import com.tcrypto.exceptions.AccessTokenIsNotFoundException;
 import com.tcrypto.exceptions.CoinIsExistAlready;
 import com.tcrypto.exceptions.CoinIsNoTFoundInCoinmarketCap;
 import com.tcrypto.exceptions.CoinIsNotRegistered;
@@ -59,6 +60,8 @@ public class Coinmarketcap {
 
     @GetMapping("/price/update")
     public void updateAllCoinPrice(HttpServletRequest request) {
+        String secretKey = request.getHeader("SECRET-KEY");
+        if (secretKey == null || !secretKey.equals("mySecretKey")) throw new AccessTokenIsNotFoundException();
         Iterable<Coin> iterator = coinDao.findAll();
         iterator.forEach(coinmarketcapService::updateCoinPrice);
     }

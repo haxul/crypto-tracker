@@ -73,7 +73,7 @@ public class UserService {
         if (!matcher.find()) throw new IncorrectUserPhoneToRegister("not valid phone number");
     }
 
-    private String getClientIp(HttpServletRequest request) {
+    public String getClientIp(HttpServletRequest request) {
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) ipAddress = request.getRemoteAddr();
         return ipAddress;
