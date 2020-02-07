@@ -13,6 +13,7 @@ import com.tcrypto.models.Coin;
 import com.tcrypto.models.User;
 import com.tcrypto.utils.StringRandom;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
