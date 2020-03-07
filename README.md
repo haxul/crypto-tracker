@@ -1,2 +1,2 @@
 # crypto-tracker
-Track your token price in binance exchange 
+Track your token price in coinmarketcap
